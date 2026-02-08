@@ -1,7 +1,15 @@
 # Chezmoi config template
-# On new machine setup, this prompts for values
+# On new machine setup, prompts for private values
 
 [data]
     name = "Thomas Bustos"
-    email = "thomas@lyah.ai"
-    github_user = "ThoBustos"
+    email = "{{ promptString "email" }}"  # Prompted, not stored
+
+    # Public socials
+    github = "ThoBustos"
+    twitter = "ThoBustos"
+    linkedin = "thomasbustos"
+    youtube = "lets-talk-ai"
+    substack = "thomasbustos"
+    tiktok = "lets_talk_ai"
+    website = "https://thomasbustos.com"
