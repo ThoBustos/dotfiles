@@ -1,3 +1,10 @@
 # Files to ignore (don't apply to home directory)
 LICENSE
 README.md
+
+# ----------------------------
+# macOS-only files (ignore on Linux/Windows)
+# ----------------------------
+{{ if ne .chezmoi.os "darwin" }}
+Brewfile
+{{ end }}
