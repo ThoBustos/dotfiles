@@ -6,19 +6,33 @@ Personal development environment managed with [Chezmoi](https://www.chezmoi.io/)
 
 | Tool | Config | Purpose |
 |------|--------|---------|
+| **Alacritty** | `~/.config/alacritty/alacritty.toml` | Terminal emulator |
 | **tmux** | `~/.config/tmux/tmux.conf` | Terminal multiplexer with session persistence |
+| **Neovim** | `~/.config/nvim/` | Editor (Kickstart-based) |
 | **Git** | `~/.gitconfig` | Git configuration |
 | **Zsh** | `~/.zshrc` | Shell configuration |
 | **Claude Code** | `~/.claude/` | AI assistant settings |
-| **Neovim** | `~/.config/nvim/` | Editor (coming soon) |
+
+## Stack
+
+| Layer | Tool | Theme |
+|-------|------|-------|
+| Terminal | Alacritty | Catppuccin Mocha |
+| Multiplexer | tmux | Catppuccin Mocha |
+| Editor | Neovim (Kickstart) | Catppuccin Mocha |
+| Font | MesloLGM Nerd Font | - |
+| Dotfiles | Chezmoi | - |
 
 ## Quick Start
 
 ### New Machine Setup
 
 ```bash
-# Install chezmoi and apply dotfiles in one command
+# One command: install chezmoi + apply dotfiles
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ThoBustos
+
+# Then run the bootstrap script (installs tools)
+~/.local/share/chezmoi/run_once_install-packages.sh
 ```
 
 Or step by step:
@@ -31,15 +45,27 @@ brew install chezmoi
 chezmoi init --apply https://github.com/ThoBustos/dotfiles
 ```
 
-### After Setup
-
-Install tmux plugin manager:
+### Manual Post-Setup
 
 ```bash
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+# Install tmux plugins (inside tmux)
+# Press: Ctrl+b I
+
+# Neovim plugins install automatically on first launch
+nvim
 ```
 
-Then in tmux, press `Ctrl+b I` to install plugins.
+## Key Decisions
+
+| Decision | Choice | Reason |
+|----------|--------|--------|
+| Terminal | Alacritty | Fast, minimal, GPU-accelerated |
+| Dotfiles manager | Chezmoi | Templates, multi-machine, encryption |
+| Config location | XDG (`~/.config/`) | Modern standard |
+| tmux prefix | `Ctrl+b` (default) | Works on any system |
+| Theme | Catppuccin Mocha | Warm dark, consistent across tools |
+| Neovim approach | Kickstart | Understand every line, not a distribution |
+| Font | MesloLGM Nerd Font | Icons for Neovim/tmux status |
 
 ## Key Bindings
 
@@ -58,6 +84,15 @@ Then in tmux, press `Ctrl+b I` to install plugins.
 | `Ctrl+b r` | Reload config |
 | `Ctrl+b I` | Install plugins (TPM) |
 
+### Session Management
+
+```bash
+tmux new -s work      # New named session
+tmux ls               # List sessions
+tmux attach -t work   # Attach to session
+Ctrl+b $              # Rename current session
+```
+
 ### Session Persistence
 
 Sessions auto-save every 15 minutes and auto-restore on tmux start.
@@ -65,36 +100,36 @@ Sessions auto-save every 15 minutes and auto-restore on tmux start.
 - `Ctrl+b Ctrl+s` - Manual save
 - `Ctrl+b Ctrl+r` - Manual restore
 
-## Stack
-
-- **Terminal**: tmux + Catppuccin Mocha
-- **Editor**: Neovim (Kickstart-based) + Catppuccin
-- **Shell**: Zsh
-- **Dotfiles**: Chezmoi
-
 ## Updating
 
 ```bash
 # Pull latest and apply
 chezmoi update
 
-# Or edit locally
+# Edit a config
 chezmoi edit ~/.config/tmux/tmux.conf
 chezmoi apply
+
+# Add a new file
+chezmoi add ~/.some-config
 ```
 
 ## Structure
 
 ```
 ~/.local/share/chezmoi/
-├── .chezmoi.toml.tmpl     # Personal data template
-├── .chezmoiignore         # Files to not apply
+├── .chezmoi.toml.tmpl          # Personal data template
+├── .chezmoiignore              # Files to not apply
+├── run_once_install-packages.sh # Bootstrap script
 ├── dot_config/
-│   ├── tmux/tmux.conf     # → ~/.config/tmux/tmux.conf
-│   └── nvim/              # → ~/.config/nvim/ (coming soon)
-├── dot_claude/            # → ~/.claude/
-├── dot_gitconfig          # → ~/.gitconfig
-├── dot_zshrc              # → ~/.zshrc
+│   ├── alacritty/alacritty.toml
+│   ├── tmux/tmux.conf
+│   └── nvim/                   # Neovim config
+├── dot_claude/
+│   ├── CLAUDE.md
+│   └── settings.json
+├── dot_gitconfig
+├── dot_zshrc
 └── README.md
 ```
 
@@ -102,5 +137,8 @@ chezmoi apply
 
 - [Chezmoi](https://www.chezmoi.io/) - Dotfiles manager
 - [Catppuccin](https://github.com/catppuccin) - Theme
+- [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) - Neovim template
 - [TPM](https://github.com/tmux-plugins/tpm) - Tmux plugin manager
-- [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) - Session persistence
+- [Mischa van den Burg](https://www.youtube.com/@MischavandenBurg) - Inspiration
+- [Dreams of Code](https://www.youtube.com/@dreamsofcode) - tmux setup guide
+- [TJ DeVries](https://www.youtube.com/@teikidev) - Kickstart.nvim
