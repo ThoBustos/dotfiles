@@ -2,6 +2,9 @@
 LICENSE
 README.md
 
+# Private SSH hosts (VPS IPs, internal aliases) - manage manually
+dot_ssh/private_config
+
 # ----------------------------
 # macOS-only files (ignore on Linux/Windows)
 # ----------------------------
