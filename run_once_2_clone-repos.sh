@@ -6,7 +6,7 @@ set -euo pipefail
 
 # Verify SSH access to GitHub before attempting clones
 # ssh -T exits with code 1 even on success; capture output with || true to avoid pipefail
-ssh_out=$(ssh -T git@github.com -o StrictHostKeyChecking=no 2>&1 || true)
+ssh_out=$(ssh -T git@github.com -o StrictHostKeyChecking=accept-new 2>&1 || true)
 if ! echo "$ssh_out" | grep -q "successfully authenticated"; then
     echo "ERROR: SSH authentication to GitHub failed."
     echo "Ensure your SSH key is added to https://github.com/settings/keys and run again."

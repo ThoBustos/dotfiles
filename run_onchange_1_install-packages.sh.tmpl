@@ -13,6 +13,7 @@ if ! xcode-select -p &>/dev/null; then
     echo "Installing Xcode Command Line Tools..."
     xcode-select --install
     echo "Waiting for Xcode CLT install to complete (follow the GUI prompt)..."
+    echo "Press Ctrl+C to abort and re-run later."
     until xcode-select -p &>/dev/null; do sleep 5; done
 fi
 
