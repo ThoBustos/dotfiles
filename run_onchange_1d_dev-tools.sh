@@ -1,8 +1,26 @@
 #!/bin/bash
-# Dev tools: GitHub CLI auth, tmux plugin manager, npm globals
+# Dev tools: Bun, Node via fnm, GitHub CLI auth, tmux plugin manager, npm globals
 set -euo pipefail
 
 [[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Bun
+if ! command -v bun &>/dev/null; then
+    echo "Installing Bun..."
+    curl -fsSL https://bun.sh/install | bash
+else
+    echo "Bun already installed"
+fi
+
+# Node LTS via fnm
+if ! command -v fnm &>/dev/null; then
+    echo "Warning: fnm not found — skipping Node setup (fix Brewfile failures first)"
+else
+    eval "$(fnm env)"
+    fnm install --lts
+    fnm default lts-latest
+    fnm use --lts
+fi
 
 # GitHub CLI auth
 if ! command -v gh &>/dev/null; then
