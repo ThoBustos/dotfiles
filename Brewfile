@@ -5,8 +5,6 @@
 # ----------------------------
 # Taps
 # ----------------------------
-tap "homebrew/bundle"
-tap "homebrew/cask-fonts"
 tap "oven-sh/bun"
 
 # ----------------------------
@@ -41,7 +39,6 @@ cask "font-meslo-lg-nerd-font"
 # ----------------------------
 # Terminal
 # ----------------------------
-# cask "alacritty"    # Replaced by Ghostty
 cask "ghostty"        # GPU-accelerated terminal
 
 # ----------------------------
@@ -54,7 +51,7 @@ cask "google-chrome"
 # ----------------------------
 cask "cursor"         # AI code editor
 cask "zed"            # Fast AI editor
-cask "docker"         # Containers
+cask "docker-desktop" # Containers
 cask "postman"        # API testing
 cask "pgadmin4"       # PostgreSQL GUI
 cask "linear-linear"  # Project management

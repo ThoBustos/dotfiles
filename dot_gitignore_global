@@ -3,40 +3,17 @@
 .AppleDouble
 .LSOverride
 
-# Editors
-.cursor/
-.vscode/
+# Editor swap / session files
 *.swp
 *.swo
+*.orig
 .idea/
 
-# Env files
-.env
-.env.local
-.env.*.local
-
-# Logs
+# Local logs
 *.log
 excalidraw.log
 
-# Dependencies
-node_modules/
-.pnp
-.pnp.js
-
-# Build output
-dist/
-build/
-.next/
-out/
-
-# Python
-__pycache__/
-*.py[cod]
-.venv/
-*.egg-info/
-.pytest_cache/
-
-# Misc
-*.orig
-.tmp/
+# Env files (user-level secrets)
+.env
+.env.local
+.env.*.local

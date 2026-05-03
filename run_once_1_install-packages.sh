@@ -2,7 +2,7 @@
 # Bootstrap script - runs once on new machine setup
 # Managed by Chezmoi
 
-set -e  # Exit on error
+set -e
 
 echo "Starting bootstrap..."
 
@@ -27,8 +27,8 @@ if [ ! -f "$HOME/.ssh/id_ed25519_github" ]; then
     echo ""
     echo "No GitHub SSH key found. Generating one..."
     read -p "Enter your email for SSH key: " ssh_email
-    ssh-keygen -t ed25519 -C "$ssh_email" -f "$HOME/.ssh/id_ed25519_github" -N ""
-    ssh-add "$HOME/.ssh/id_ed25519_github"
+    ssh-keygen -t ed25519 -C "$ssh_email" -f "$HOME/.ssh/id_ed25519_github"
+    ssh-add --apple-use-keychain "$HOME/.ssh/id_ed25519_github"
     echo ""
     echo "Your public key (add to https://github.com/settings/keys):"
     cat "$HOME/.ssh/id_ed25519_github.pub"
@@ -36,17 +36,6 @@ if [ ! -f "$HOME/.ssh/id_ed25519_github" ]; then
     read -p "Press Enter once you've added the key to GitHub..."
 else
     echo "GitHub SSH key already exists"
-fi
-
-# ----------------------------
-# GitHub CLI Auth
-# ----------------------------
-
-if ! gh auth status &> /dev/null; then
-    echo "Logging into GitHub CLI..."
-    gh auth login
-else
-    echo "GitHub CLI already authenticated"
 fi
 
 # ----------------------------
@@ -76,32 +65,23 @@ else
 fi
 
 # ----------------------------
-# CLI Tools (via Homebrew)
+# All packages via Brewfile
 # ----------------------------
 
-echo "Installing CLI tools..."
-brew install tmux
-brew install neovim
-brew install ripgrep
-brew install fd
-brew install git
-brew install node
-brew install gh
-brew install fzf
-brew install jq
-brew install graphite
-brew install python
-brew install poetry
-brew install pnpm
-brew install uv
+BREWFILE="$HOME/.local/share/chezmoi/Brewfile"
+echo "Installing packages from Brewfile..."
+brew bundle install --file="$BREWFILE"
 
 # ----------------------------
-# Ghostty
+# GitHub CLI Auth
 # ----------------------------
 
-echo "Installing Ghostty..."
-brew install --cask ghostty
-brew install --cask font-meslo-lg-nerd-font
+if ! gh auth status &> /dev/null; then
+    echo "Logging into GitHub CLI..."
+    gh auth login
+else
+    echo "GitHub CLI already authenticated"
+fi
 
 # ----------------------------
 # tmux Plugin Manager
@@ -130,8 +110,7 @@ echo ""
 echo "Bootstrap complete!"
 echo ""
 echo "Next steps:"
-echo "  1. Run: brew bundle install (to install all apps from Brewfile)"
-echo "  2. Run: tmux, then Ctrl+b I (to install tmux plugins)"
-echo "  3. Run: nvim (plugins install automatically)"
-echo "  4. Install manually: Granola, Brain.fm, CapCut, Fathom, Wispr Flow"
+echo "  1. Run: tmux, then Ctrl+b I (to install tmux plugins)"
+echo "  2. Run: nvim (plugins install automatically)"
+echo "  3. Install manually: Granola, Brain.fm, CapCut, Fathom, Wispr Flow"
 echo ""
