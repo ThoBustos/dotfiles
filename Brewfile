@@ -77,8 +77,7 @@ cask "claude"         # Claude desktop app
 cask "granola"        # AI meeting notes
 
 # ----------------------------
-# Manual installs (not in Homebrew / App Store)
+# npm globals (automated by bootstrap)
 # ----------------------------
+# @anthropic-ai/claude-code, @openai/codex — installed by run_onchange_1
 # Brain.fm - iOS-only, install manually on iPhone/iPad
-# npm install -g @anthropic-ai/claude-code
-# npm install -g @openai/codex

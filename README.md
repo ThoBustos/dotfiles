@@ -173,7 +173,7 @@ SSH private hosts live in `~/.ssh/private_config` (never tracked in this repo).
 ```bash
 chezmoi doctor
 chezmoi status --dry-run --verbose
-bash -n run_onchange_1_install-packages.sh.tmpl run_once_2_clone-repos.sh run_once_3_macos-defaults.sh
+bash -n run_once_2_clone-repos.sh run_once_3_macos-defaults.sh
 brew bundle check --file=Brewfile
 ```
 

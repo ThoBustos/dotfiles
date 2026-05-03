@@ -2,6 +2,8 @@
 # macOS system defaults - runs once on new machine setup
 # Managed by Chezmoi
 
+set -euo pipefail
+
 echo "Applying macOS defaults..."
 
 # ----------------------------
