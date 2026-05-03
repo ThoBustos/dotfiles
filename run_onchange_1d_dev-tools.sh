@@ -19,7 +19,6 @@ else
     eval "$(fnm env)"
     fnm install --lts
     fnm default lts-latest
-    fnm use --lts
 fi
 
 # GitHub CLI auth
