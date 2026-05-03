@@ -61,7 +61,6 @@ cask "notion"         # Notes (cloud)
 cask "figma"          # Design
 cask "spotify"        # Music
 cask "screen-studio"  # Screen recording
-cask "zotero"         # Research & reading
 cask "tailscale-app"  # Private network VPN
 
 # ----------------------------
