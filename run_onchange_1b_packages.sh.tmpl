@@ -1,0 +1,10 @@
+#!/bin/bash
+# Homebrew packages — re-runs when Brewfile changes
+# Brewfile hash: {{ include (joinPath .chezmoi.sourceDir "Brewfile") | sha256sum }}
+set -euo pipefail
+
+[[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
+BREWFILE="$HOME/.local/share/chezmoi/Brewfile"
+echo "Installing packages from Brewfile..."
+brew bundle install --file="$BREWFILE" --no-fail-fast || echo "Warning: some Brewfile packages failed — check above for details"
