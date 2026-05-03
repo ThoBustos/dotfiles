@@ -5,6 +5,26 @@ README.md
 # Private SSH hosts (VPS IPs, internal aliases) - manage manually
 dot_ssh/private_config
 
+# Codex machine-specific state (sessions, cache, rules)
+dot_codex/rules
+dot_codex/sessions
+dot_codex/memories
+dot_codex/cache
+dot_codex/logs*
+dot_codex/sqlite
+dot_codex/*.sqlite*
+dot_codex/history.jsonl
+dot_codex/installation_id
+dot_codex/version.json
+dot_codex/models_cache.json
+dot_codex/session_index.jsonl
+dot_codex/shell_snapshots
+dot_codex/skills
+dot_codex/plugins
+dot_codex/vendor_imports
+dot_codex/state_*.sqlite*
+dot_codex/.tmp
+
 # ----------------------------
 # macOS-only files (ignore on Linux/Windows)
 # ----------------------------

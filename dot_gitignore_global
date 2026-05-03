@@ -1,0 +1,42 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editors
+.cursor/
+.vscode/
+*.swp
+*.swo
+.idea/
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+excalidraw.log
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+build/
+.next/
+out/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+
+# Misc
+*.orig
+.tmp/

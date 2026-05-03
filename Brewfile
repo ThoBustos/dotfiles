@@ -7,6 +7,7 @@
 # ----------------------------
 tap "homebrew/bundle"
 tap "homebrew/cask-fonts"
+tap "oven-sh/bun"
 
 # ----------------------------
 # CLI Tools
@@ -16,11 +17,21 @@ brew "tmux"           # Terminal multiplexer
 brew "neovim"         # Editor
 brew "git"            # Version control
 brew "gh"             # GitHub CLI
-brew "node"           # Node.js (for LSPs, Claude Code)
-brew "ripgrep"        # Fast grep (for Telescope)
-brew "fd"             # Fast find (for Telescope)
+brew "node"           # Node.js
+brew "ripgrep"        # Fast grep (for Telescope / fuzzy search)
+brew "fd"             # Fast find
 brew "fzf"            # Fuzzy finder
 brew "jq"             # JSON processor
+brew "graphite"       # Stacked PRs CLI (gt)
+
+# ----------------------------
+# Dev Languages & Package Managers
+# ----------------------------
+brew "python"         # Python 3
+brew "poetry"         # Python dependency management
+brew "pnpm"           # Fast Node package manager
+brew "uv"             # Fast Python runner / env manager
+brew "oven-sh/bun/bun" # Bun JS runtime
 
 # ----------------------------
 # Fonts
@@ -28,21 +39,21 @@ brew "jq"             # JSON processor
 cask "font-meslo-lg-nerd-font"
 
 # ----------------------------
-# Terminals
+# Terminal
 # ----------------------------
-cask "alacritty"      # GPU-accelerated terminal
-cask "warp"           # AI-powered terminal
+# cask "alacritty"    # Replaced by Ghostty
+cask "ghostty"        # GPU-accelerated terminal
 
 # ----------------------------
 # Browsers
 # ----------------------------
-cask "arc"            # Modern browser
-cask "google-chrome"  # Backup browser
+cask "google-chrome"
 
 # ----------------------------
-# Development
+# Editors & Dev Tools
 # ----------------------------
 cask "cursor"         # AI code editor
+cask "zed"            # Fast AI editor
 cask "docker"         # Containers
 cask "postman"        # API testing
 cask "pgadmin4"       # PostgreSQL GUI
@@ -55,6 +66,10 @@ cask "raycast"        # Launcher (replaces Spotlight)
 cask "obsidian"       # Notes (local markdown)
 cask "notion"         # Notes (cloud)
 cask "figma"          # Design
+cask "spotify"        # Music
+cask "screen-studio"  # Screen recording
+cask "zotero"         # Research & reading
+cask "tailscale"      # Private network VPN
 
 # ----------------------------
 # Communication
@@ -64,14 +79,21 @@ cask "zoom"           # Video calls
 cask "loom"           # Async video
 
 # ----------------------------
-# Passwords (pick your main one)
+# AI Tools
 # ----------------------------
-cask "1password"
-cask "dashlane"
-cask "bitwarden"
+cask "claude"         # Claude desktop app
 
 # ----------------------------
 # Manual installs (not in Homebrew)
 # ----------------------------
-# - Granola: https://granola.so/download
-# - Claude Code: npm install -g @anthropic-ai/claude-code
+# npm install -g @anthropic-ai/claude-code
+# npm install -g @openai/codex
+# Granola:     https://granola.so/download
+# Brain.fm:    App Store
+# CapCut:      App Store
+# Fathom:      https://fathom.video
+# FocuSee:     App Store
+# Wispr Flow:  https://wisprflow.ai
+# Rippling:    IT-managed
+# SentinelOne: IT-managed
+# MS Office:   Company license
