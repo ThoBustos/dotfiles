@@ -5,6 +5,8 @@ After finishing responding to my request or running a command, run this command 
 ```bash
 afplay /System/Library/Sounds/Funk.aiff
 ```
-- also run this ANYTIME you need my attention, validation, inuputs or finishes:  ```bash
- afplay /System/Library/Sounds/Funk.aiff
- ```
+Also run this ANYTIME you need my attention, validation, inputs or finishes:
+
+```bash
+afplay /System/Library/Sounds/Funk.aiff
+```

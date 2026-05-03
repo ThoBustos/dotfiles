@@ -1,0 +1,132 @@
+#!/bin/bash
+# Bootstrap script - re-runs when Brewfile changes
+# Managed by Chezmoi
+# Brewfile hash: {{ include (joinPath .chezmoi.sourceDir "Brewfile") | sha256sum }}
+
+set -euo pipefail
+
+# ----------------------------
+# Xcode Command Line Tools
+# ----------------------------
+
+if ! xcode-select -p &>/dev/null; then
+    echo "Installing Xcode Command Line Tools..."
+    xcode-select --install
+    echo "Waiting for Xcode CLT install to complete (follow the GUI prompt)..."
+    echo "Press Ctrl+C to abort and re-run later."
+    until xcode-select -p &>/dev/null; do sleep 5; done
+fi
+
+echo "Starting bootstrap..."
+
+# ----------------------------
+# Rosetta 2 (Apple Silicon only)
+# ----------------------------
+
+if [[ "$(uname -m)" == "arm64" ]] && ! pkgutil --pkg-info=com.apple.pkg.RosettaUpdateAuto &>/dev/null; then
+    echo "Installing Rosetta 2..."
+    softwareupdate --install-rosetta --agree-to-license
+fi
+
+# ----------------------------
+# Homebrew
+# ----------------------------
+
+if ! command -v brew &> /dev/null; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+else
+    echo "Homebrew already installed"
+fi
+
+brew analytics off
+
+# ----------------------------
+# SSH Key Setup
+# ----------------------------
+
+if [ ! -f "$HOME/.ssh/id_ed25519_github" ]; then
+    echo ""
+    echo "No GitHub SSH key found. Generating one..."
+    read -rp "Enter your email for SSH key: " ssh_email
+    ssh-keygen -t ed25519 -C "$ssh_email" -f "$HOME/.ssh/id_ed25519_github"
+    ssh-add --apple-use-keychain "$HOME/.ssh/id_ed25519_github"
+    echo ""
+    echo "Your public key (add to https://github.com/settings/keys):"
+    cat "$HOME/.ssh/id_ed25519_github.pub"
+    echo ""
+    read -rp "Press Enter once you've added the key to GitHub..."
+else
+    echo "GitHub SSH key already exists"
+fi
+
+# ----------------------------
+# Bun
+# ----------------------------
+
+if ! command -v bun &> /dev/null; then
+    echo "Installing Bun..."
+    curl -fsSL https://bun.sh/install | bash
+else
+    echo "Bun already installed"
+fi
+
+# ----------------------------
+# All packages via Brewfile
+# ----------------------------
+
+BREWFILE="$HOME/.local/share/chezmoi/Brewfile"
+echo "Installing packages from Brewfile..."
+brew bundle install --file="$BREWFILE"
+
+# ----------------------------
+# Node via fnm (fnm installed via Brewfile above)
+# ----------------------------
+
+eval "$(fnm env)"
+fnm install --lts
+fnm default lts-latest
+fnm use --lts
+
+# ----------------------------
+# GitHub CLI Auth
+# ----------------------------
+
+if ! gh auth status &> /dev/null; then
+    echo "Logging into GitHub CLI..."
+    gh auth login
+else
+    echo "GitHub CLI already authenticated"
+fi
+
+# ----------------------------
+# tmux Plugin Manager
+# ----------------------------
+
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+    echo "Installing TPM (tmux plugin manager)..."
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+else
+    echo "TPM already installed"
+fi
+
+# ----------------------------
+# npm Global Tools
+# ----------------------------
+
+echo "Installing npm global tools..."
+npm install -g @anthropic-ai/claude-code
+npm install -g @openai/codex
+
+# ----------------------------
+# Done
+# ----------------------------
+
+echo ""
+echo "Bootstrap complete!"
+echo ""
+echo "Next steps:"
+echo "  1. Run: tmux, then Ctrl+b I (to install tmux plugins)"
+echo "  2. Run: nvim (plugins install automatically)"
+echo ""

@@ -1,0 +1,44 @@
+#!/bin/bash
+# Security stack status check
+# Usage: security-status
+
+echo "=== Security Status ==="
+echo ""
+
+# Exit node check
+echo "Exit Node:"
+if tailscale status --json 2>/dev/null | grep -q '"ExitNode":true'; then
+    echo "  ✓ ACTIVE (traffic routed through VPS)"
+else
+    echo "  ✗ OFF (direct connection)"
+fi
+echo ""
+
+# Public IP
+echo "Your Public IP:"
+IP=$(tailscale ip -4 2>/dev/null || curl -s --max-time 5 ifconfig.me)
+echo "  $IP"
+echo ""
+
+# DNS filtering check
+echo "DNS Filtering:"
+result=$(nslookup ads.google.com 2>/dev/null | grep -E "127.0.0.1|0.0.0.0")
+if [ -n "$result" ]; then
+    echo "  ✓ AdGuard blocking ads"
+else
+    echo "  ? Check AdGuard (may not be filtering)"
+fi
+echo ""
+
+# VPS reachability
+echo "VPS Status:"
+if ssh -o ConnectTimeout=3 -o BatchMode=yes vps "echo ok" &>/dev/null; then
+    echo "  ✓ Reachable via SSH"
+else
+    echo "  ✗ Cannot reach VPS"
+fi
+echo ""
+
+# Tailscale status
+echo "Tailnet Devices:"
+tailscale status 2>/dev/null | head -5

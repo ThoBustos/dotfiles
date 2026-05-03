@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor swap / session files
+*.swp
+*.swo
+*.orig
+.idea/
+
+# Local logs
+*.log
+excalidraw.log
+
+# Env files (user-level secrets)
+.env
+.env.local
+.env.*.local
