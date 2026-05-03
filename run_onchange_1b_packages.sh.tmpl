@@ -7,4 +7,4 @@ set -euo pipefail
 
 BREWFILE="$HOME/.local/share/chezmoi/Brewfile"
 echo "Installing packages from Brewfile..."
-brew bundle install --file="$BREWFILE" --no-fail-fast || echo "Warning: some Brewfile packages failed — check above for details"
+brew bundle install --file="$BREWFILE" || echo "Warning: some Brewfile packages failed — check above for details"

@@ -5,7 +5,9 @@ set -euo pipefail
 [[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # GitHub CLI auth
-if ! gh auth status &>/dev/null; then
+if ! command -v gh &>/dev/null; then
+    echo "Warning: gh not found — skipping GitHub CLI auth (fix Brewfile failures first)"
+elif ! gh auth status &>/dev/null; then
     echo "Logging into GitHub CLI..."
     gh auth login
 else
