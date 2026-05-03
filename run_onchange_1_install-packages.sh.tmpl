@@ -49,14 +49,14 @@ brew analytics off
 if [ ! -f "$HOME/.ssh/id_ed25519_github" ]; then
     echo ""
     echo "No GitHub SSH key found. Generating one..."
-    read -p "Enter your email for SSH key: " ssh_email
+    read -rp "Enter your email for SSH key: " ssh_email
     ssh-keygen -t ed25519 -C "$ssh_email" -f "$HOME/.ssh/id_ed25519_github"
     ssh-add --apple-use-keychain "$HOME/.ssh/id_ed25519_github"
     echo ""
     echo "Your public key (add to https://github.com/settings/keys):"
     cat "$HOME/.ssh/id_ed25519_github.pub"
     echo ""
-    read -p "Press Enter once you've added the key to GitHub..."
+    read -rp "Press Enter once you've added the key to GitHub..."
 else
     echo "GitHub SSH key already exists"
 fi
