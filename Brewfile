@@ -73,6 +73,7 @@ cask "loom"           # Async video
 # AI Tools
 # ----------------------------
 cask "claude"         # Claude desktop app
+cask "granola"        # AI meeting notes
 
 # ----------------------------
 # App Store (via mas)
@@ -83,4 +84,3 @@ mas "Brain.fm", id: 1092613769
 # ----------------------------
 # npm install -g @anthropic-ai/claude-code
 # npm install -g @openai/codex
-# Granola:     https://granola.so/download  (not on App Store)
