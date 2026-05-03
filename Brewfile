@@ -6,7 +6,6 @@
 # CLI Tools
 # ----------------------------
 brew "chezmoi"        # Dotfiles manager
-# brew "mas"            # Mac App Store CLI (uncomment if adding mas installs below)
 brew "dockutil"       # Dock layout manager
 brew "tmux"           # Terminal multiplexer
 brew "neovim"         # Editor
@@ -77,11 +76,8 @@ cask "claude"         # Claude desktop app
 cask "granola"        # AI meeting notes
 
 # ----------------------------
-# App Store (via mas)
+# Manual installs (not in Homebrew / App Store)
 # ----------------------------
-# mas "Brain.fm", id: 1110684238  # iOS-only app, install manually on iPhone/iPad
-# ----------------------------
-# Manual installs (not in Homebrew)
-# ----------------------------
+# Brain.fm - iOS-only, install manually on iPhone/iPad
 # npm install -g @anthropic-ai/claude-code
 # npm install -g @openai/codex
