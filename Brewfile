@@ -55,7 +55,7 @@ cask "linear"         # Project management
 # ----------------------------
 # Productivity
 # ----------------------------
-cask "raycast"        # Launcher (replaces Spotlight)
+# cask "raycast"        # Launcher (replaces Spotlight) — install manually (network issues)
 cask "obsidian"       # Notes (local markdown)
 cask "notion"         # Notes (cloud)
 cask "figma"          # Design
