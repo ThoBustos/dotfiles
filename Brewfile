@@ -50,7 +50,7 @@ cask "zed"            # Fast AI editor
 cask "docker-desktop" # Containers
 cask "postman"        # API testing
 cask "pgadmin4"       # PostgreSQL GUI
-cask "linear-linear"  # Project management
+cask "linear"         # Project management
 
 # ----------------------------
 # Productivity
@@ -62,7 +62,7 @@ cask "figma"          # Design
 cask "spotify"        # Music
 cask "screen-studio"  # Screen recording
 cask "zotero"         # Research & reading
-cask "tailscale"      # Private network VPN
+cask "tailscale-app"  # Private network VPN
 
 # ----------------------------
 # Communication
