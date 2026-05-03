@@ -25,6 +25,7 @@ else
     echo "Homebrew already installed"
 fi
 
+[[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 brew analytics off
 
 # SSH key

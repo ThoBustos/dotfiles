@@ -21,6 +21,10 @@ else
 fi
 
 # npm globals
-echo "Installing npm global tools..."
-npm install -g @anthropic-ai/claude-code
-npm install -g @openai/codex
+if command -v npm &>/dev/null; then
+    echo "Installing npm global tools..."
+    npm install -g @anthropic-ai/claude-code
+    npm install -g @openai/codex
+else
+    echo "Warning: npm not found — skipping global installs (fix Brewfile failures first)"
+fi

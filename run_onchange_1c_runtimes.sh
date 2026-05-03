@@ -13,6 +13,10 @@ else
 fi
 
 # Node LTS via fnm
+if ! command -v fnm &>/dev/null; then
+    echo "Warning: fnm not found — skipping Node setup (fix Brewfile failures first)"
+    exit 0
+fi
 eval "$(fnm env)"
 fnm install --lts
 fnm default lts-latest
