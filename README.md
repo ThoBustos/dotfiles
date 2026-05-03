@@ -108,6 +108,23 @@ The bootstrap deploys `~/.ssh/config` with only the GitHub host. For VPS/interna
 | `Ctrl+b Ctrl+s` | Save session |
 | `Ctrl+b Ctrl+r` | Restore session |
 
+### Session Management
+
+```bash
+tmux new -s work       # New named session
+tmux ls                # List sessions
+tmux attach -t work    # Attach to session
+Ctrl+b $               # Rename current session
+```
+
+Sessions auto-save every 15 minutes and restore automatically on tmux start.
+
+### Post-Install Manual Steps
+
+- **Raycast**: Open → Settings → General → set hotkey to `Option+Space`. Then disable Spotlight in System Settings → Keyboard Shortcuts → Spotlight.
+- **Granola, Brain.fm, CapCut, Fathom, Wispr Flow**: install manually (see Brewfile comments)
+- **SSH private hosts**: create `~/.ssh/private_config` manually for VPS/internal hosts
+
 ## Updating
 
 ```bash
