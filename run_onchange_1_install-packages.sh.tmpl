@@ -78,7 +78,7 @@ fi
 
 BREWFILE="$HOME/.local/share/chezmoi/Brewfile"
 echo "Installing packages from Brewfile..."
-brew bundle install --file="$BREWFILE"
+brew bundle install --file="$BREWFILE" --no-fail-fast || echo "Warning: some Brewfile packages failed — check above for details"
 
 # ----------------------------
 # Node via fnm (fnm installed via Brewfile above)
