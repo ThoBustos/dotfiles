@@ -18,6 +18,7 @@ dockutil --add ~/Downloads --view fan --display folder --sort dateadded --no-res
 # ----------------------------
 # Keyboard
 # ----------------------------
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 defaults write NSGlobalDomain KeyRepeat -int 2
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
 

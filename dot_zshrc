@@ -5,7 +5,7 @@
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# Homebrew must come before NVM so Homebrew node never shadows NVM's node
+# Homebrew before NVM so NVM's node takes priority (NVM prepends PATH last)
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 

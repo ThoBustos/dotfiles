@@ -16,7 +16,7 @@ echo ""
 
 # Public IP
 echo "Your Public IP:"
-IP=$(curl -s --max-time 5 ifconfig.me)
+IP=$(tailscale ip -4 2>/dev/null || curl -s --max-time 5 ifconfig.me)
 echo "  $IP"
 echo ""
 
