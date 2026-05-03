@@ -39,11 +39,9 @@ All apps installed via `brew bundle install`:
 | Dev Tools | Docker Desktop, Postman, pgAdmin, Linear |
 | Productivity | Raycast, Obsidian, Notion, Figma, Spotify, Screen Studio, Zotero, Tailscale |
 | Communication | Slack, Zoom, Loom |
-| AI | Claude desktop |
+| AI | Claude desktop, Granola |
 
-**App Store (via `mas`):** Brain.fm
-
-**npm globals:** `npm i -g @anthropic-ai/claude-code @openai/codex`
+**npm globals** (`@anthropic-ai/claude-code`, `@openai/codex`) are installed automatically by the bootstrap script.
 
 ## Quick Start
 
@@ -57,7 +55,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ThoBustos
 That single command will:
 - Clone this repo to `~/.local/share/chezmoi/`
 - Apply all configs to your home directory
-- Run `run_once_1_install-packages.sh` - Homebrew, SSH key, NVM, Bun, all packages via Brewfile, gh auth, TPM, npm globals
+- Run `run_onchange_1_install-packages.sh.tmpl` - Homebrew, Rosetta 2, SSH key, fnm/Node, Bun, all packages via Brewfile, gh auth, TPM, npm globals
 - Run `run_once_2_clone-repos.sh` - clone personal repos (my-vault, openyoko, ideabench, learnrep)
 - Run `run_once_3_macos-defaults.sh` - dock, keyboard, finder, screenshot defaults
 
@@ -70,8 +68,6 @@ tmux
 
 # Neovim plugins install automatically on first launch
 nvim
-
-
 ```
 
 ### Private SSH Hosts
@@ -140,7 +136,8 @@ chezmoi add ~/.some-new-config
 ├── .chezmoiignore                   # OS-aware ignore rules
 ├── .gitignore                       # Keeps private_config out of repo
 ├── Brewfile                         # All macOS apps
-├── run_once_1_install-packages.sh   # Bootstrap: Homebrew, SSH, packages, auth
+├── run_onchange_1_install-packages.sh.tmpl  # Bootstrap: Homebrew, Rosetta, SSH, packages, auth
+├── dot_zprofile                     # Homebrew shellenv for login shells
 ├── run_once_2_clone-repos.sh        # Clone personal repos
 ├── run_once_3_macos-defaults.sh     # macOS system defaults
 ├── dot_config/
@@ -176,7 +173,7 @@ SSH private hosts live in `~/.ssh/private_config` (never tracked in this repo).
 ```bash
 chezmoi doctor
 chezmoi status --dry-run --verbose
-bash -n run_once_1_install-packages.sh run_once_2_clone-repos.sh run_once_3_macos-defaults.sh
+bash -n run_onchange_1_install-packages.sh.tmpl run_once_2_clone-repos.sh run_once_3_macos-defaults.sh
 brew bundle check --file=Brewfile
 ```
 

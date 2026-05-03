@@ -19,17 +19,27 @@ fi
 echo "Starting bootstrap..."
 
 # ----------------------------
+# Rosetta 2 (Apple Silicon only)
+# ----------------------------
+
+if [[ "$(uname -m)" == "arm64" ]] && ! pkgutil --pkg-info=com.apple.pkg.RosettaUpdateAuto &>/dev/null; then
+    echo "Installing Rosetta 2..."
+    softwareupdate --install-rosetta --agree-to-license
+fi
+
+# ----------------------------
 # Homebrew
 # ----------------------------
 
 if ! command -v brew &> /dev/null; then
     echo "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    # Add brew to PATH for Apple Silicon
     eval "$(/opt/homebrew/bin/brew shellenv)"
 else
     echo "Homebrew already installed"
 fi
+
+brew analytics off
 
 # ----------------------------
 # SSH Key Setup
@@ -51,22 +61,6 @@ else
 fi
 
 # ----------------------------
-# NVM + Node
-# ----------------------------
-
-if [ ! -f "$HOME/.nvm/nvm.sh" ]; then
-    echo "Installing NVM..."
-    NVM_VERSION=$(curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
-    curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh" | bash
-else
-    echo "NVM already installed"
-fi
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm use --lts 2>/dev/null || nvm install --lts
-
-# ----------------------------
 # Bun
 # ----------------------------
 
@@ -84,6 +78,14 @@ fi
 BREWFILE="$HOME/.local/share/chezmoi/Brewfile"
 echo "Installing packages from Brewfile..."
 brew bundle install --file="$BREWFILE"
+
+# ----------------------------
+# Node via fnm (fnm installed via Brewfile above)
+# ----------------------------
+
+eval "$(fnm env)"
+fnm install --lts
+fnm use --lts
 
 # ----------------------------
 # GitHub CLI Auth

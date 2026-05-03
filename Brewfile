@@ -22,6 +22,7 @@ brew "graphite"       # Stacked PRs CLI (gt)
 # ----------------------------
 brew "python"         # Python 3
 brew "poetry"         # Python dependency management
+brew "fnm"            # Fast Node version manager
 brew "pnpm"           # Fast Node package manager
 brew "uv"             # Fast Python runner / env manager
 

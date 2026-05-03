@@ -29,6 +29,7 @@ clone_if_missing() {
     fi
 }
 
+# Fork this repo? Update the list below with your own repos.
 clone_if_missing "ThoBustos/my-vault"  "$PROJECTS/my-vault"
 clone_if_missing "ThoBustos/openyoko"  "$PROJECTS/openyoko"
 clone_if_missing "ThoBustos/ideabench" "$PROJECTS/ideabench"

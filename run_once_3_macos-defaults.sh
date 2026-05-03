@@ -10,6 +10,7 @@ echo "Applying macOS defaults..."
 defaults write com.apple.dock tilesize -int 36
 defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock show-recents -bool false
+defaults write com.apple.dock mru-spaces -bool false
 
 dockutil --remove all --no-restart
 dockutil --add ~/Downloads --view fan --display folder --sort dateadded --no-restart
@@ -49,6 +50,7 @@ defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1  # Tap to click
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
 
 # Apply changes
 killall Dock Finder 2>/dev/null || true
