@@ -41,9 +41,9 @@ All apps installed via `brew bundle install`:
 | Communication | Slack, Zoom, Loom |
 | AI | Claude desktop |
 
-**App Store (via `mas`):** Brain.fm, CapCut, FocuSee
+**App Store (via `mas`):** Brain.fm
 
-**Manual installs:** Granola, Fathom, Wispr Flow, Rippling, SentinelOne, MS Office
+**Manual installs:** Granola
 
 **npm globals:** `npm i -g @anthropic-ai/claude-code @openai/codex`
 
@@ -73,7 +73,7 @@ tmux
 # Neovim plugins install automatically on first launch
 nvim
 
-# Install manually: Granola, Fathom, Wispr Flow
+# Install manually: Granola
 ```
 
 ### Private SSH Hosts
@@ -124,7 +124,7 @@ Sessions auto-save every 15 minutes and restore automatically on tmux start.
 ### Post-Install Manual Steps
 
 - **Raycast**: Open → Settings → General → set hotkey to `Option+Space`. Then disable Spotlight in System Settings → Keyboard Shortcuts → Spotlight.
-- **Granola, Fathom, Wispr Flow**: install manually (see Brewfile comments)
+- **Granola**: install manually from https://granola.so/download
 - **SSH private hosts**: create `~/.ssh/private_config` manually for VPS/internal hosts
 
 ## Updating

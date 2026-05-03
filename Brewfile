@@ -78,17 +78,9 @@ cask "claude"         # Claude desktop app
 # App Store (via mas)
 # ----------------------------
 mas "Brain.fm", id: 1092613769
-mas "CapCut", id: 1500855883
-mas "FocuSee", id: 1625366485
-
 # ----------------------------
 # Manual installs (not in Homebrew)
 # ----------------------------
 # npm install -g @anthropic-ai/claude-code
 # npm install -g @openai/codex
 # Granola:     https://granola.so/download  (not on App Store)
-# Fathom:      https://fathom.video
-# Wispr Flow:  https://wisprflow.ai
-# Rippling:    IT-managed
-# SentinelOne: IT-managed
-# MS Office:   Company license
