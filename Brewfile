@@ -15,6 +15,7 @@ brew "ripgrep"        # Fast grep (for Telescope / fuzzy search)
 brew "fd"             # Fast find
 brew "fzf"            # Fuzzy finder
 brew "jq"             # JSON processor
+tap "withgraphite/tap"
 brew "graphite"       # Stacked PRs CLI (gt)
 
 # ----------------------------
