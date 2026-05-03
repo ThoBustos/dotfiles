@@ -41,7 +41,9 @@ All apps installed via `brew bundle install`:
 | Communication | Slack, Zoom, Loom |
 | AI | Claude desktop |
 
-**Manual installs:** Granola, Brain.fm, CapCut, Fathom, FocuSee, Wispr Flow, Rippling, SentinelOne, MS Office
+**App Store (via `mas`):** Brain.fm, CapCut, FocuSee
+
+**Manual installs:** Granola, Fathom, Wispr Flow, Rippling, SentinelOne, MS Office
 
 **npm globals:** `npm i -g @anthropic-ai/claude-code @openai/codex`
 
@@ -71,7 +73,7 @@ tmux
 # Neovim plugins install automatically on first launch
 nvim
 
-# Install manually: Granola, Brain.fm, CapCut, Fathom, Wispr Flow
+# Install manually: Granola, Fathom, Wispr Flow
 ```
 
 ### Private SSH Hosts
@@ -122,7 +124,7 @@ Sessions auto-save every 15 minutes and restore automatically on tmux start.
 ### Post-Install Manual Steps
 
 - **Raycast**: Open → Settings → General → set hotkey to `Option+Space`. Then disable Spotlight in System Settings → Keyboard Shortcuts → Spotlight.
-- **Granola, Brain.fm, CapCut, Fathom, Wispr Flow**: install manually (see Brewfile comments)
+- **Granola, Fathom, Wispr Flow**: install manually (see Brewfile comments)
 - **SSH private hosts**: create `~/.ssh/private_config` manually for VPS/internal hosts
 
 ## Updating
@@ -159,6 +161,26 @@ chezmoi add ~/.some-new-config
 ├── dot_gitconfig.tmpl
 ├── dot_gitignore_global
 └── dot_zshrc
+```
+
+## Secrets & Password Manager
+
+No password manager is bootstrapped automatically — browser extensions can't be installed via CLI.
+
+After Chrome is set up, install your preferred extension manually:
+- [Dashlane](https://chromewebstore.google.com/detail/dashlane-password-manager/fdjamakpfbbddfjaooikfcpapjohcfmg)
+- [1Password](https://chromewebstore.google.com/detail/1password-password-manage/aeblfdkhhhdcdjpifhhbdiojplfjncoa)
+- [Bitwarden](https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb)
+
+SSH private hosts live in `~/.ssh/private_config` (never tracked in this repo).
+
+## Health Check
+
+```bash
+chezmoi doctor
+chezmoi status --dry-run --verbose
+bash -n run_once_1_install-packages.sh run_once_2_clone-repos.sh run_once_3_macos-defaults.sh
+brew bundle check --file=Brewfile
 ```
 
 ## Credits

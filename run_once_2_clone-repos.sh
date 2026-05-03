@@ -2,6 +2,15 @@
 # Clone personal repos - runs once on new machine setup
 # Managed by Chezmoi
 
+set -euo pipefail
+
+# Verify SSH access to GitHub before attempting clones
+if ! ssh -T git@github.com -o StrictHostKeyChecking=no 2>&1 | grep -q "successfully authenticated"; then
+    echo "ERROR: SSH authentication to GitHub failed."
+    echo "Ensure your SSH key is added to https://github.com/settings/keys and run again."
+    exit 1
+fi
+
 PROJECTS="$HOME/Documents/projects"
 mkdir -p "$PROJECTS"
 

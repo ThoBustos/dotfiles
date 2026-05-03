@@ -4,6 +4,7 @@ Host github.com
     IdentityFile ~/.ssh/id_ed25519_github
     IdentitiesOnly yes
     AddKeysToAgent yes
+    IgnoreUnknown UseKeychain
     UseKeychain yes
 
 # Private hosts (VPS, internal aliases) - managed manually, not tracked in dotfiles

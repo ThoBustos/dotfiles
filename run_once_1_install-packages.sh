@@ -2,7 +2,18 @@
 # Bootstrap script - runs once on new machine setup
 # Managed by Chezmoi
 
-set -e
+set -euo pipefail
+
+# ----------------------------
+# Xcode Command Line Tools
+# ----------------------------
+
+if ! xcode-select -p &>/dev/null; then
+    echo "Installing Xcode Command Line Tools..."
+    xcode-select --install
+    echo "Waiting for Xcode CLT install to complete (follow the GUI prompt)..."
+    until xcode-select -p &>/dev/null; do sleep 5; done
+fi
 
 echo "Starting bootstrap..."
 
@@ -112,5 +123,5 @@ echo ""
 echo "Next steps:"
 echo "  1. Run: tmux, then Ctrl+b I (to install tmux plugins)"
 echo "  2. Run: nvim (plugins install automatically)"
-echo "  3. Install manually: Granola, Brain.fm, CapCut, Fathom, Wispr Flow"
+echo "  3. Install manually: Granola, Fathom, Wispr Flow"
 echo ""
