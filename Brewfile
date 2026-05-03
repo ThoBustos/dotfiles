@@ -7,6 +7,7 @@
 # ----------------------------
 brew "chezmoi"        # Dotfiles manager
 brew "mas"            # Mac App Store CLI
+brew "dockutil"       # Dock layout manager
 brew "tmux"           # Terminal multiplexer
 brew "neovim"         # Editor
 brew "git"            # Version control

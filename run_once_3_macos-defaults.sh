@@ -11,6 +11,11 @@ defaults write com.apple.dock tilesize -int 36
 defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock show-recents -bool false
 
+dockutil --remove all --no-restart
+dockutil --add /System/Library/CoreServices/Finder.app --no-restart
+dockutil --add ~/Downloads --view fan --display folder --sort dateadded --no-restart
+dockutil --add ~/.Trash --view fan --display folder --no-restart
+
 # ----------------------------
 # Keyboard
 # ----------------------------
