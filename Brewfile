@@ -16,7 +16,7 @@ brew "fd"             # Fast find
 brew "fzf"            # Fuzzy finder
 brew "jq"             # JSON processor
 tap "withgraphite/tap"
-brew "graphite"       # Stacked PRs CLI (gt)
+brew "withgraphite/tap/graphite" # Stacked PRs CLI (gt)
 
 # ----------------------------
 # Dev Languages & Package Managers
