@@ -53,7 +53,7 @@ fi
 # NVM + Node
 # ----------------------------
 
-if [ ! -d "$HOME/.nvm" ]; then
+if [ ! -f "$HOME/.nvm/nvm.sh" ]; then
     echo "Installing NVM..."
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
     export NVM_DIR="$HOME/.nvm"

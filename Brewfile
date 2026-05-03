@@ -6,7 +6,7 @@
 # CLI Tools
 # ----------------------------
 brew "chezmoi"        # Dotfiles manager
-brew "mas"            # Mac App Store CLI
+# brew "mas"            # Mac App Store CLI (uncomment if adding mas installs below)
 brew "dockutil"       # Dock layout manager
 brew "tmux"           # Terminal multiplexer
 brew "neovim"         # Editor
@@ -79,7 +79,7 @@ cask "granola"        # AI meeting notes
 # ----------------------------
 # App Store (via mas)
 # ----------------------------
-mas "Brain.fm", id: 1092613769
+# mas "Brain.fm", id: 1110684238  # iOS-only app, install manually on iPhone/iPad
 # ----------------------------
 # Manual installs (not in Homebrew)
 # ----------------------------
