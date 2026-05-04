@@ -8,3 +8,9 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
 eval "$(fnm env --use-on-cd)"
+
+# Google Cloud SDK
+_GCLOUD_PREFIX="$(brew --prefix)/share/google-cloud-sdk"
+[[ -f "$_GCLOUD_PREFIX/path.zsh.inc" ]]       && source "$_GCLOUD_PREFIX/path.zsh.inc"
+[[ -f "$_GCLOUD_PREFIX/completion.zsh.inc" ]] && source "$_GCLOUD_PREFIX/completion.zsh.inc"
+unset _GCLOUD_PREFIX
