@@ -4,6 +4,20 @@ set -euo pipefail
 
 [[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
+# Python 3.13 via pyenv
+if command -v pyenv &>/dev/null; then
+    eval "$(pyenv init -)"
+    if ! pyenv versions | grep -q "3.13"; then
+        echo "Installing Python 3.13 via pyenv..."
+        pyenv install 3.13
+        pyenv global 3.13
+    else
+        echo "Python 3.13 already installed via pyenv"
+    fi
+else
+    echo "Warning: pyenv not found — skipping Python 3.13 install (fix Brewfile failures first)"
+fi
+
 # Bun
 if ! command -v bun &>/dev/null; then
     echo "Installing Bun..."
