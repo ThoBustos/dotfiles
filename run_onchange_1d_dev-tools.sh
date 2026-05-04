@@ -9,6 +9,7 @@ set -euo pipefail
 # Use shim PATH directly — mise activate is for interactive shells only
 if command -v mise &>/dev/null; then
     export PATH="${MISE_DATA_DIR:-$HOME/.local/share/mise}/shims:$PATH"
+    export MISE_PYTHON_GITHUB_ATTESTATIONS=false
     mise use --global python@3.12.2
     mise use --global node@22.14.0
     echo "mise globals set: python@3.12.2, node@22.14.0"
