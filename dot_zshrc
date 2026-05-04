@@ -10,5 +10,7 @@ export PATH="$HOME/.local/bin:$PATH"
 eval "$(fnm env --use-on-cd)"
 
 # Google Cloud SDK
-[[ -f "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc" ]] && source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
-[[ -f "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc" ]] && source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
+_GCLOUD_PREFIX="$(brew --prefix)/share/google-cloud-sdk"
+[[ -f "$_GCLOUD_PREFIX/path.zsh.inc" ]]       && source "$_GCLOUD_PREFIX/path.zsh.inc"
+[[ -f "$_GCLOUD_PREFIX/completion.zsh.inc" ]] && source "$_GCLOUD_PREFIX/completion.zsh.inc"
+unset _GCLOUD_PREFIX
