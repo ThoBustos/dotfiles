@@ -77,6 +77,11 @@ cask "claude"         # Claude desktop app
 cask "granola"        # AI meeting notes
 
 # ----------------------------
+# Cloud CLIs
+# ----------------------------
+cask "gcloud-cli"     # Google Cloud SDK (gcloud, gsutil, bq)
+
+# ----------------------------
 # npm globals (automated by bootstrap)
 # ----------------------------
 # @anthropic-ai/claude-code, @openai/codex — installed by run_onchange_1
