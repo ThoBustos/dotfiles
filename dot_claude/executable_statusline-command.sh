@@ -31,15 +31,16 @@ if [ -n "$cwd" ] && cd "$cwd" 2>/dev/null; then
     [ -n "$worktree_branch" ] && branch="$worktree_branch"
 fi
 
-# 2. Context %
+# 2. Context % (remaining)
 if [ -n "$used_pct" ]; then
     used_int=$(printf '%.0f' "$used_pct")
-    if   [ "$used_int" -ge 80 ]; then pct_color="$RED"
-    elif [ "$used_int" -ge 70 ]; then pct_color="$ORANGE"
-    elif [ "$used_int" -ge 60 ]; then pct_color="$YELLOW"
+    rem=$((100 - used_int))
+    if   [ "$rem" -le 20 ]; then pct_color="$RED"
+    elif [ "$rem" -le 30 ]; then pct_color="$ORANGE"
+    elif [ "$rem" -le 40 ]; then pct_color="$YELLOW"
     else pct_color="$GREEN"
     fi
-    parts+=("${DIM}ctx:${R}${pct_color}${used_int}%${R}")
+    parts+=("${DIM}ctx:${R}${pct_color}${rem}%${R}")
 fi
 
 # 3. Branch
