@@ -9,7 +9,6 @@ worktree_branch=$(echo "$input" | jq -r '.worktree.branch // empty')
 # Colors
 R='\033[0m'
 DIM='\033[2m'
-BOLD='\033[1m'
 WHITE='\033[37m'
 BLUE='\033[34m'
 YELLOW='\033[33m'
