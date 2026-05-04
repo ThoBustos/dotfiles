@@ -4,13 +4,14 @@ set -euo pipefail
 
 [[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# Python 3.12.2 + Node LTS via mise
+# Python 3.12.2 + Node 22.14.0 via mise
 # mise reads per-project .tool-versions automatically; globals are just fallbacks
+# Use shim PATH directly — mise activate is for interactive shells only
 if command -v mise &>/dev/null; then
-    eval "$(mise activate bash)"
+    export PATH="$HOME/.local/share/mise/shims:$PATH"
     mise use --global python@3.12.2
-    mise use --global node@lts
-    echo "mise globals set: python@3.12.2, node@lts"
+    mise use --global node@22.14.0
+    echo "mise globals set: python@3.12.2, node@22.14.0"
 else
     echo "Warning: mise not found — skipping Python/Node setup (fix Brewfile failures first)"
 fi
