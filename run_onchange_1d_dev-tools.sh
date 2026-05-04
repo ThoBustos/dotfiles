@@ -8,7 +8,7 @@ set -euo pipefail
 # mise reads per-project .tool-versions automatically; globals are just fallbacks
 # Use shim PATH directly — mise activate is for interactive shells only
 if command -v mise &>/dev/null; then
-    export PATH="$HOME/.local/share/mise/shims:$PATH"
+    export PATH="${MISE_DATA_DIR:-$HOME/.local/share/mise}/shims:$PATH"
     mise use --global python@3.12.2
     mise use --global node@22.14.0
     echo "mise globals set: python@3.12.2, node@22.14.0"
