@@ -21,9 +21,8 @@ brew "withgraphite/tap/graphite" # Stacked PRs CLI (gt)
 # ----------------------------
 # Dev Languages & Package Managers
 # ----------------------------
-brew "python"         # Python 3
+brew "mise"           # Polyglot version manager (Python, Node — reads .tool-versions)
 brew "poetry"         # Python dependency management
-brew "fnm"            # Fast Node version manager
 brew "pnpm"           # Fast Node package manager
 brew "uv"             # Fast Python runner / env manager
 
