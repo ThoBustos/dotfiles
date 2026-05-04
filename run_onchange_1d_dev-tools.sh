@@ -1,21 +1,18 @@
 #!/bin/bash
-# Dev tools: Bun, Node via fnm, GitHub CLI auth, tmux plugin manager, npm globals
+# Dev tools: Bun, Python+Node via mise, GitHub CLI auth, tmux plugin manager, npm globals
 set -euo pipefail
 
 [[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# Python 3.12.2 via pyenv (matches .tool-versions used by supernal projects)
-if command -v pyenv &>/dev/null; then
-    eval "$(pyenv init -)"
-    if ! pyenv versions | grep -q "3.12.2"; then
-        echo "Installing Python 3.12.2 via pyenv..."
-        pyenv install 3.12.2
-        pyenv global 3.12.2
-    else
-        echo "Python 3.12.2 already installed via pyenv"
-    fi
+# Python 3.12.2 + Node LTS via mise
+# mise reads per-project .tool-versions automatically; globals are just fallbacks
+if command -v mise &>/dev/null; then
+    eval "$(mise activate bash)"
+    mise use --global python@3.12.2
+    mise use --global node@lts
+    echo "mise globals set: python@3.12.2, node@lts"
 else
-    echo "Warning: pyenv not found — skipping Python 3.12.2 install (fix Brewfile failures first)"
+    echo "Warning: mise not found — skipping Python/Node setup (fix Brewfile failures first)"
 fi
 
 # Bun
@@ -24,15 +21,6 @@ if ! command -v bun &>/dev/null; then
     curl -fsSL https://bun.sh/install | bash
 else
     echo "Bun already installed"
-fi
-
-# Node LTS via fnm
-if ! command -v fnm &>/dev/null; then
-    echo "Warning: fnm not found — skipping Node setup (fix Brewfile failures first)"
-else
-    eval "$(fnm env)"
-    fnm install --lts
-    fnm default lts-latest
 fi
 
 # GitHub CLI auth
