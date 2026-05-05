@@ -25,9 +25,9 @@
     "command": "bash {{ .chezmoi.homeDir }}/.claude/statusline-command.sh"
   },
   "mcpServers": {
-    "browsermcp": {
-      "command": "npx",
-      "args": ["@browsermcp/mcp@latest"],
+    "browser-use": {
+      "command": "uvx",
+      "args": ["--from", "browser-use[cli]", "browser-use", "--mcp"],
       "type": "stdio"
     },
     "playwright": {
