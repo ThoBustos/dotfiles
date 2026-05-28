@@ -1,0 +1,28 @@
+#!/bin/bash
+# Install Tailscale — private mesh VPN to keep SSH off public internet
+# Runs once on first chezmoi apply on a Linux machine
+[[ "$(uname)" != "Linux" ]] && exit 0
+set -euo pipefail
+
+echo "=== Tailscale Setup ==="
+
+if command -v tailscale &>/dev/null; then
+    echo "Tailscale already installed ($(tailscale version))"
+    exit 0
+fi
+
+# Official install script
+curl -fsSL https://tailscale.com/install.sh | sh
+
+systemctl enable tailscaled
+systemctl start tailscaled
+
+echo ""
+echo "=== Tailscale installed ==="
+echo "Next: authenticate with your tailnet:"
+echo "  sudo tailscale up --authkey=<your-auth-key>"
+echo ""
+echo "Get a reusable auth key at: https://login.tailscale.com/admin/settings/keys"
+echo "After joining, you can restrict UFW to Tailscale-only SSH:"
+echo "  sudo ufw delete limit 22/tcp"
+echo "  sudo ufw allow in on tailscale0 to any port 22"

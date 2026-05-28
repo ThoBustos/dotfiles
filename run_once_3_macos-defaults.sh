@@ -1,6 +1,7 @@
 #!/bin/bash
 # macOS system defaults - runs once on new machine setup
 # Managed by Chezmoi
+[[ "$(uname)" != "Darwin" ]] && exit 0
 
 set -euo pipefail
 
