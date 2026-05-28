@@ -74,20 +74,28 @@ ufw --force enable
 echo "UFW configured"
 
 # fail2ban — SSH jail
+# banaction = ufw ensures bans go through UFW, not raw iptables (avoids backend clash)
 cat > /etc/fail2ban/jail.local << 'EOF'
 [DEFAULT]
-bantime  = 3600
-findtime = 600
-maxretry = 3
-backend  = systemd
+bantime   = 3600
+findtime  = 600
+maxretry  = 3
+backend   = systemd
+banaction = ufw
 
 [sshd]
 enabled  = true
 port     = 22
+
+[recidive]
+enabled  = true
+bantime  = 604800
+findtime = 86400
+maxretry = 5
 EOF
 systemctl enable fail2ban
 systemctl restart fail2ban
-echo "fail2ban configured"
+echo "fail2ban configured (UFW backend, recidive jail enabled)"
 
 # Unattended security upgrades
 cat > /etc/apt/apt.conf.d/20auto-upgrades << 'EOF'

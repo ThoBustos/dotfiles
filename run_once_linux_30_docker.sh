@@ -19,6 +19,24 @@ fi
 # Official Docker install script (adds apt repo + installs latest stable)
 curl -fsSL https://get.docker.com | sh
 
+# SECURITY: Prevent Docker from bypassing UFW
+# Docker modifies iptables directly and exposes container ports before UFW chains,
+# meaning UFW rules would be silently ignored for any bound container ports.
+# Setting "iptables: false" disables this — Docker networking still works via
+# the host network, but port exposure is controlled by UFW as expected.
+mkdir -p /etc/docker
+cat > /etc/docker/daemon.json << 'EOF'
+{
+  "iptables": false,
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "3"
+  }
+}
+EOF
+echo "Docker daemon configured (UFW-safe, log rotation enabled)"
+
 # Add deploy user to docker group (no sudo needed for docker commands)
 if id "deploy" &>/dev/null; then
     usermod -aG docker deploy
