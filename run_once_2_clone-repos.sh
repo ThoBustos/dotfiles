@@ -1,6 +1,7 @@
 #!/bin/bash
-# Clone personal repos - runs once on new machine setup
+# Clone personal repos - macOS workstation only
 # Managed by Chezmoi
+[[ "$(uname)" != "Darwin" ]] && exit 0
 
 set -euo pipefail
 
