@@ -292,7 +292,7 @@ tmux attach -t work
 ├── run_onchange_1a_system-prereqs.sh   # macOS prerequisites
 ├── run_onchange_1b_packages.sh.tmpl    # macOS Homebrew packages
 ├── run_onchange_1d_dev-tools.sh        # macOS dev tools
-├── run_once_2_clone-repos.sh           # Personal repo clone
+├── run_once_2_clone-repos.sh           # macOS personal repo clone
 ├── run_once_3_macos-defaults.sh        # macOS defaults
 ├── run_once_linux_10_harden.sh.tmpl    # Ubuntu SSH, UFW, fail2ban, updates
 ├── run_once_linux_20_tailscale.sh.tmpl # Ubuntu Tailscale install
