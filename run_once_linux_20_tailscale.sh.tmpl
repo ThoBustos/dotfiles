@@ -1,7 +1,8 @@
+{{- if eq .chezmoi.os "linux" -}}
+{{- if eq .chezmoi.osRelease.id "ubuntu" -}}
 #!/bin/bash
 # Install Tailscale — private mesh VPN to keep SSH off public internet
-# Runs once on first chezmoi apply on a Linux machine
-[[ "$(uname)" != "Linux" ]] && exit 0
+# Runs once on first chezmoi apply on an Ubuntu server
 set -euo pipefail
 
 echo "=== Tailscale Setup ==="
@@ -26,3 +27,5 @@ echo "Get a reusable auth key at: https://login.tailscale.com/admin/settings/key
 echo "After joining, you can restrict UFW to Tailscale-only SSH:"
 echo "  sudo ufw delete limit 22/tcp"
 echo "  sudo ufw allow in on tailscale0 to any port 22"
+{{- end }}
+{{- end }}

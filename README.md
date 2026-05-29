@@ -59,6 +59,32 @@ That single command will:
 - Run `run_once_2_clone-repos.sh` - clone personal repos (my-vault, openyoko, ideabench, learnrep)
 - Run `run_once_3_macos-defaults.sh` - dock, keyboard, finder, screenshot defaults
 
+### New Server Setup (Ubuntu/Hetzner)
+
+```bash
+# SSH in as root, then apply the Ubuntu server bootstrap.
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ThoBustos
+```
+
+Before the SSH hardening step runs, the root account must have a valid `~/.ssh/authorized_keys`. The bootstrap copies it to the server user (`deploy` by default, override with `CHEZMOI_SERVER_USER`) and refuses to disable root/password SSH if no key is present.
+
+After bootstrap, open a second terminal and verify the server user login before closing the root session:
+
+```bash
+ssh deploy@your-server
+```
+
+Then finish interactive services:
+
+```bash
+sudo tailscale up --authkey=<your-auth-key>
+sudo -u deploy -H /home/deploy/.local/bin/hermes setup
+sudo -u deploy -H /home/deploy/.local/bin/hermes doctor
+sudo -u deploy -H /home/deploy/.local/bin/hermes gateway setup
+sudo -u deploy -H /home/deploy/.local/bin/hermes gateway install
+sudo -u deploy -H /home/deploy/.local/bin/hermes gateway start
+```
+
 ### After Bootstrap
 
 ```bash
