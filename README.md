@@ -93,7 +93,7 @@ ssh deploy@your-server-public-ip
 Connect Tailscale:
 
 ```bash
-sudo tailscale up --authkey=<your-auth-key>
+sudo tailscale up --ssh
 ```
 
 After Tailscale works, connect by Tailscale name or IP:
@@ -106,11 +106,18 @@ ssh deploy@100.x.y.z
 Optional SSH lockdown after Tailscale works:
 
 ```bash
-sudo ufw delete limit 22/tcp
-sudo ufw allow in on tailscale0 to any port 22
+sudo bash /root/.local/share/chezmoi/scripts/manual_ubuntu_lockdown_ssh_to_tailscale.sh
 ```
 
 After this, public-IP SSH should stop working. Tailscale SSH should still work. Only do this after testing Tailscale access from another terminal.
+
+Cloud provider firewall:
+
+- In Hetzner, enable a firewall at the server level.
+- Allow UDP `41641` from anywhere for Tailscale.
+- Allow TCP `80` and `443` only if the server will host public websites.
+- Do not allow public TCP `22` after Tailscale SSH works.
+- Keep UFW enabled on the server too.
 
 What Ubuntu setup does:
 
@@ -150,6 +157,38 @@ Hermes usage:
 - From a phone: use `hermes gateway setup`, connect a supported app like Telegram, Discord, or Slack, then message that app.
 - Hermes private config lives in `/home/deploy/.hermes`.
 - Do not track `/home/deploy/.hermes` in chezmoi.
+
+Hermes phone access with Telegram:
+
+- Telegram is optional, but it is the easiest phone interface.
+- Open Telegram and search for `@BotFather`.
+- Send `/newbot`.
+- Choose a bot name and a username ending in `bot`.
+- Copy the bot token from BotFather.
+- Paste that token during `hermes gateway setup`.
+- Allow only Alexi's Telegram user ID.
+- Keep the bot token secret.
+- Delete or hide messages that contain setup tokens.
+
+Gateway UI tunnel:
+
+- Keep the Hermes gateway bound to loopback, not the public internet.
+- From Alexi's computer, run:
+
+```bash
+ssh -N -L 127.0.0.1:18789:127.0.0.1:18789 deploy@100.x.y.z
+```
+
+- Replace `100.x.y.z` with the server's Tailscale IP.
+- Open `http://127.0.0.1:18789` in the browser.
+- Keep the gateway token secret.
+
+LLM spend safety:
+
+- Prefer subscription or OAuth auth when supported.
+- If API keys are used, set provider spend limits.
+- Enable usage alerts.
+- Check usage during the first few days.
 
 Ubuntu health check:
 
@@ -259,6 +298,8 @@ tmux attach -t work
 ├── run_once_linux_20_tailscale.sh.tmpl # Ubuntu Tailscale install
 ├── run_once_linux_30_docker.sh.tmpl    # Ubuntu Docker install
 ├── run_once_linux_40_hermes.sh.tmpl    # Ubuntu Hermes install
+├── scripts/
+│   └── manual_ubuntu_lockdown_ssh_to_tailscale.sh
 ├── dot_config/
 │   ├── ghostty/config
 │   ├── tmux/tmux.conf
