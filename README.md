@@ -85,6 +85,21 @@ sudo -u deploy -H /home/deploy/.local/bin/hermes gateway install
 sudo -u deploy -H /home/deploy/.local/bin/hermes gateway start
 ```
 
+What this server setup does:
+
+- Runs only on Ubuntu Linux.
+- Creates a `deploy` user and copies root's SSH authorized keys.
+- Gives `deploy` passwordless sudo for automation.
+- Hardens SSH by disabling root login, password login, agent forwarding, and TCP forwarding.
+- Installs UFW, fail2ban, unattended security updates, curl, wget, git, and jq.
+- Configures UFW to deny incoming traffic by default, allow outgoing traffic, rate-limit SSH, and allow HTTP/HTTPS.
+- Configures fail2ban for SSH with UFW-based bans and longer repeat-offender bans.
+- Installs Tailscale so the server can join your private mesh VPN.
+- Installs Docker Engine and the Docker Compose plugin, adds `deploy` to the Docker group, and enables Docker log rotation.
+- Installs Hermes Agent as `deploy`; config lives in `/home/deploy/.hermes`.
+- Leaves Tailscale auth and Hermes setup/gateway connection as manual steps because they require credentials or OAuth.
+- Keeps macOS scripts skipped on Linux, so the same repo can bootstrap both Macs and servers.
+
 ### After Bootstrap
 
 ```bash
