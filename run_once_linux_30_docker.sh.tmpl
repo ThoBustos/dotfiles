@@ -1,6 +1,10 @@
-{{- if eq .chezmoi.os "linux" -}}
-{{- if eq .chezmoi.osRelease.id "ubuntu" -}}
 #!/bin/bash
+chezmoi_os='{{ .chezmoi.os }}'
+chezmoi_os_release_id='{{ if eq .chezmoi.os "linux" }}{{ .chezmoi.osRelease.id }}{{ end }}'
+if [[ "$chezmoi_os" != "linux" || "$chezmoi_os_release_id" != "ubuntu" ]]; then
+    exit 0
+fi
+
 # Install Docker Engine + docker compose plugin
 # Runs once on first chezmoi apply on an Ubuntu server
 set -euo pipefail
@@ -47,5 +51,3 @@ systemctl start docker
 echo "=== Docker installed ==="
 docker --version
 docker compose version
-{{- end }}
-{{- end }}

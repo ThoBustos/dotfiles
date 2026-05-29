@@ -1,6 +1,10 @@
-{{- if eq .chezmoi.os "linux" -}}
-{{- if eq .chezmoi.osRelease.id "ubuntu" -}}
 #!/bin/bash
+chezmoi_os='{{ .chezmoi.os }}'
+chezmoi_os_release_id='{{ if eq .chezmoi.os "linux" }}{{ .chezmoi.osRelease.id }}{{ end }}'
+if [[ "$chezmoi_os" != "linux" || "$chezmoi_os_release_id" != "ubuntu" ]]; then
+    exit 0
+fi
+
 # Linux security hardening: UFW, fail2ban, SSH hardening, unattended-upgrades
 # Runs once on first chezmoi apply on an Ubuntu server
 set -euo pipefail
@@ -118,5 +122,3 @@ echo "Unattended upgrades enabled"
 
 echo "=== Hardening complete ==="
 echo "IMPORTANT: Test SSH access with $TARGET_USER before logging out of root."
-{{- end }}
-{{- end }}
