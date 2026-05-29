@@ -1,0 +1,49 @@
+#!/bin/bash
+chezmoi_os='{{ .chezmoi.os }}'
+chezmoi_os_release_id='{{ if eq .chezmoi.os "linux" }}{{ .chezmoi.osRelease.id }}{{ end }}'
+if [[ "$chezmoi_os" != "linux" || "$chezmoi_os_release_id" != "ubuntu" ]]; then
+    exit 0
+fi
+
+# Install Hermes agent for the server user
+# Runs once on first chezmoi apply on an Ubuntu server
+set -euo pipefail
+
+echo "=== Hermes Agent Setup ==="
+
+TARGET_USER="${CHEZMOI_SERVER_USER:-deploy}"
+if ! id "$TARGET_USER" &>/dev/null; then
+    echo "$TARGET_USER user does not exist; run hardening first" >&2
+    exit 1
+fi
+
+TARGET_HOME="$(getent passwd "$TARGET_USER" | cut -d: -f6)"
+HERMES_BIN="$TARGET_HOME/.local/bin/hermes"
+
+if [[ $EUID -eq 0 ]]; then
+    run_as_target() {
+        sudo -u "$TARGET_USER" -H env PATH="$TARGET_HOME/.local/bin:/usr/local/bin:/usr/bin:/bin" bash -lc "$*"
+    }
+else
+    run_as_target() {
+        env PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin" bash -lc "$*"
+    }
+fi
+
+if [[ -x "$HERMES_BIN" ]]; then
+    run_as_target "hermes --version || true"
+    echo "Hermes already installed for $TARGET_USER"
+else
+    run_as_target "curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash"
+fi
+
+echo ""
+echo "=== Hermes installed ==="
+echo "Next steps:"
+echo "  1. sudo -u $TARGET_USER -H $HERMES_BIN setup"
+echo "  2. sudo -u $TARGET_USER -H $HERMES_BIN doctor"
+echo "  3. sudo -u $TARGET_USER -H $HERMES_BIN gateway setup"
+echo "  4. sudo -u $TARGET_USER -H $HERMES_BIN gateway install"
+echo "  5. sudo -u $TARGET_USER -H $HERMES_BIN gateway start"
+echo ""
+echo "Config lives at: $TARGET_HOME/.hermes/"

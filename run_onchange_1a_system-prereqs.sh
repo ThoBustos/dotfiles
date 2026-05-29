@@ -1,5 +1,6 @@
 #!/bin/bash
-# System prerequisites: Xcode CLT, Rosetta 2, Homebrew, SSH key
+# System prerequisites: Xcode CLT, Rosetta 2, Homebrew, SSH key (macOS only)
+[[ "$(uname)" != "Darwin" ]] && exit 0
 set -euo pipefail
 
 # Xcode CLT

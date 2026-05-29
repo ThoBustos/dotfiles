@@ -1,0 +1,53 @@
+#!/bin/bash
+chezmoi_os='{{ .chezmoi.os }}'
+chezmoi_os_release_id='{{ if eq .chezmoi.os "linux" }}{{ .chezmoi.osRelease.id }}{{ end }}'
+if [[ "$chezmoi_os" != "linux" || "$chezmoi_os_release_id" != "ubuntu" ]]; then
+    exit 0
+fi
+
+# Install Docker Engine + docker compose plugin
+# Runs once on first chezmoi apply on an Ubuntu server
+set -euo pipefail
+
+echo "=== Docker Setup ==="
+
+if command -v docker &>/dev/null; then
+    echo "Docker already installed ($(docker --version))"
+    exit 0
+fi
+
+# Must run as root
+if [[ $EUID -ne 0 ]]; then
+    exec sudo bash "$0" "$@"
+fi
+
+# Official Docker install script (adds apt repo + installs latest stable)
+curl -fsSL https://get.docker.com | sh
+
+# Keep Docker iptables enabled. Restrict published services with DOCKER-USER,
+# localhost/Tailscale binds, or reverse proxy rules instead of disabling Docker NAT.
+mkdir -p /etc/docker
+cat > /etc/docker/daemon.json << 'EOF'
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "3"
+  }
+}
+EOF
+echo "Docker daemon configured (log rotation enabled)"
+
+# Add server user to docker group (no sudo needed for docker commands)
+TARGET_USER="${CHEZMOI_SERVER_USER:-deploy}"
+if id "$TARGET_USER" &>/dev/null; then
+    usermod -aG docker "$TARGET_USER"
+    echo "$TARGET_USER user added to docker group"
+fi
+
+systemctl enable docker
+systemctl start docker
+
+echo "=== Docker installed ==="
+docker --version
+docker compose version

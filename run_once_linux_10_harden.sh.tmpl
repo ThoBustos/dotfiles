@@ -1,0 +1,124 @@
+#!/bin/bash
+chezmoi_os='{{ .chezmoi.os }}'
+chezmoi_os_release_id='{{ if eq .chezmoi.os "linux" }}{{ .chezmoi.osRelease.id }}{{ end }}'
+if [[ "$chezmoi_os" != "linux" || "$chezmoi_os_release_id" != "ubuntu" ]]; then
+    exit 0
+fi
+
+# Linux security hardening: UFW, fail2ban, SSH hardening, unattended-upgrades
+# Runs once on first chezmoi apply on an Ubuntu server
+set -euo pipefail
+
+echo "=== Linux Security Hardening ==="
+
+TARGET_USER="${CHEZMOI_SERVER_USER:-deploy}"
+if [[ ! "$TARGET_USER" =~ ^[a-z_][a-z0-9_-]*$ ]]; then
+    echo "Invalid CHEZMOI_SERVER_USER: $TARGET_USER" >&2
+    exit 1
+fi
+
+# Must run as root
+if [[ $EUID -ne 0 ]]; then
+    echo "Re-running with sudo..."
+    exec sudo bash "$0" "$@"
+fi
+
+command -v apt-get >/dev/null || { echo "apt-get not found; this script expects Ubuntu" >&2; exit 1; }
+command -v systemctl >/dev/null || { echo "systemctl not found; this script expects systemd" >&2; exit 1; }
+
+SOURCE_AUTH_KEYS="${CHEZMOI_AUTHORIZED_KEYS:-$HOME/.ssh/authorized_keys}"
+if [[ ! -s "$SOURCE_AUTH_KEYS" ]]; then
+    echo "No authorized_keys found at $SOURCE_AUTH_KEYS; refusing to disable root/password SSH" >&2
+    exit 1
+fi
+
+# Create non-root server user
+if ! id "$TARGET_USER" &>/dev/null; then
+    echo "Creating $TARGET_USER user..."
+    useradd -m -s /bin/bash "$TARGET_USER"
+    usermod -aG sudo "$TARGET_USER"
+    echo "$TARGET_USER user created"
+else
+    echo "$TARGET_USER user already exists"
+fi
+TARGET_HOME="$(getent passwd "$TARGET_USER" | cut -d: -f6)"
+install -d -m 700 -o "$TARGET_USER" -g "$TARGET_USER" "$TARGET_HOME/.ssh"
+install -m 600 -o "$TARGET_USER" -g "$TARGET_USER" "$SOURCE_AUTH_KEYS" "$TARGET_HOME/.ssh/authorized_keys"
+
+# Passwordless sudo for server automation. Override TARGET_USER with CHEZMOI_SERVER_USER if needed.
+echo "$TARGET_USER ALL=(ALL) NOPASSWD:ALL" > "/etc/sudoers.d/$TARGET_USER"
+chmod 440 "/etc/sudoers.d/$TARGET_USER"
+
+# Install security packages
+apt-get update -qq
+apt-get install -y --no-install-recommends \
+    ufw fail2ban unattended-upgrades apt-listchanges \
+    curl wget git jq
+
+# SSH hardening via drop-in so the distro-managed config remains intact.
+install -d -m 755 /etc/ssh/sshd_config.d
+cat > /etc/ssh/sshd_config.d/99-chezmoi-hardening.conf << 'EOF'
+PermitRootLogin no
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+ChallengeResponseAuthentication no
+X11Forwarding no
+MaxAuthTries 3
+LoginGraceTime 20
+AllowAgentForwarding no
+AllowTcpForwarding no
+EOF
+
+sshd -t
+if systemctl list-unit-files ssh.service --no-legend | grep -q '^ssh\.service'; then
+    systemctl restart ssh
+else
+    systemctl restart sshd
+fi
+echo "SSH hardened"
+
+# UFW firewall
+ufw --force reset
+ufw default deny incoming
+ufw default allow outgoing
+ufw limit 22/tcp comment 'SSH rate-limited'    # 6 connections per 30s
+ufw allow 80/tcp comment 'HTTP'
+ufw allow 443/tcp comment 'HTTPS'
+ufw --force enable
+echo "UFW configured"
+
+# fail2ban — SSH jail
+# banaction = ufw ensures bans go through UFW, not raw iptables (avoids backend clash)
+cat > /etc/fail2ban/jail.local << 'EOF'
+[DEFAULT]
+bantime   = 3600
+findtime  = 600
+maxretry  = 3
+backend   = systemd
+banaction = ufw
+
+[sshd]
+enabled  = true
+port     = 22
+
+[recidive]
+enabled  = true
+bantime  = 604800
+findtime = 86400
+maxretry = 5
+EOF
+systemctl enable fail2ban
+systemctl restart fail2ban
+echo "fail2ban configured (UFW backend, recidive jail enabled)"
+
+# Unattended security upgrades
+cat > /etc/apt/apt.conf.d/20auto-upgrades << 'EOF'
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";
+APT::Periodic::AutocleanInterval "7";
+EOF
+systemctl enable unattended-upgrades
+echo "Unattended upgrades enabled"
+
+echo "=== Hardening complete ==="
+echo "IMPORTANT: Test SSH access with $TARGET_USER before logging out of root."

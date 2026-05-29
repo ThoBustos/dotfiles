@@ -1,5 +1,6 @@
 #!/bin/bash
-# Dev tools: Bun, Python+Node via mise, GitHub CLI auth, tmux plugin manager, npm globals
+# Dev tools: Bun, Python+Node via mise, GitHub CLI auth, tmux plugin manager, npm globals (macOS only)
+[[ "$(uname)" != "Darwin" ]] && exit 0
 set -euo pipefail
 
 [[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
