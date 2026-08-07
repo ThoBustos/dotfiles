@@ -79,6 +79,7 @@ cask "granola"        # AI meeting notes
 # Cloud CLIs
 # ----------------------------
 cask "gcloud-cli"     # Google Cloud SDK (gcloud, gsutil, bq)
+cask "ngrok"          # Tunnel localhost to the internet
 
 # ----------------------------
 # npm globals (automated by bootstrap)
