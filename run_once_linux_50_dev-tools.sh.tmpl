@@ -1,0 +1,39 @@
+#!/bin/bash
+chezmoi_os='{{ .chezmoi.os }}'
+chezmoi_os_release_id='{{ if eq .chezmoi.os "linux" }}{{ .chezmoi.osRelease.id }}{{ end }}'
+if [[ "$chezmoi_os" != "linux" || "$chezmoi_os_release_id" != "ubuntu" ]]; then
+    exit 0
+fi
+
+# Dev tools for Ubuntu: Node.js 22 + Claude Code
+# Runs once on first chezmoi apply on an Ubuntu server
+set -euo pipefail
+
+echo "=== Linux Dev Tools ==="
+
+# Must run as root
+if [[ $EUID -ne 0 ]]; then
+    exec sudo bash "$0" "$@"
+fi
+
+# Node.js 22 via NodeSource
+if ! command -v node &>/dev/null; then
+    echo "Installing Node.js 22..."
+    curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+    apt-get install -y nodejs
+else
+    echo "Node.js already installed ($(node --version))"
+fi
+
+# Claude Code
+if ! command -v claude &>/dev/null; then
+    echo "Installing Claude Code..."
+    npm install -g @anthropic-ai/claude-code
+else
+    echo "Claude Code already installed"
+fi
+
+echo "=== Dev tools installed ==="
+node --version
+npm --version
+claude --version || true
