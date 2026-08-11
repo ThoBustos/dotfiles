@@ -84,6 +84,15 @@ Before running setup:
 - The default server user is `deploy`.
 - To use another user, run with `CHEZMOI_SERVER_USER=name`.
 
+`chezmoi init` will ask:
+
+- **"Is this an Ubuntu Desktop (not a remote VPS)"** — yes assumes a personal, interactive machine: dotfiles apply, security/service bootstrap is skipped. No further questions.
+- If no (a VPS), two more prompts decide independently:
+  - **"Will you code directly on this VPS"** (default no) — controls whether tmux/nvim/zed/ghostty configs are applied.
+  - **"Run the security/service bootstrap"** (default yes) — controls whether hardening, Tailscale, Docker, Hermes, and dev-tools scripts run at all.
+
+These two answers are independent — a VPS can be coded-on and hardened at the same time, or just one, or neither.
+
 After bootstrap, open a second terminal and test the new user before closing root:
 
 ```bash
@@ -126,7 +135,7 @@ What Ubuntu setup does:
 - Gives `deploy` passwordless sudo for automation.
 - Hardens SSH by disabling root login, password login, agent forwarding, and TCP forwarding.
 - Installs UFW, fail2ban, unattended security updates, curl, wget, git, and jq.
-- Configures UFW to deny incoming traffic by default, allow outgoing traffic, rate-limit SSH, and allow HTTP/HTTPS.
+- Configures UFW to deny incoming traffic by default, allow outgoing traffic, and rate-limit SSH. Ports 80/443 are left closed — open them explicitly (`sudo ufw allow 80/tcp`, `sudo ufw allow 443/tcp`) only if this server hosts public websites. This avoids blindly exposing any non-public service already bound to those ports (e.g. a DNS admin UI).
 - Configures fail2ban for SSH with UFW-based bans and longer repeat-offender bans.
 - Installs Tailscale so the server can join your private mesh VPN.
 - Installs Docker Engine and Docker Compose plugin.
