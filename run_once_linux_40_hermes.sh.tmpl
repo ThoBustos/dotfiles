@@ -27,11 +27,15 @@ HERMES_BIN="$TARGET_HOME/.local/bin/hermes"
 
 if [[ $EUID -eq 0 ]]; then
     run_as_target() {
-        sudo -u "$TARGET_USER" -H env PATH="$TARGET_HOME/.local/bin:/usr/local/bin:/usr/bin:/bin" bash -lc "$*"
+        # cd into the target's home first: uv (used by the Hermes installer)
+        # resolves relative config/venv paths from cwd, and `sudo -u` alone
+        # doesn't change cwd — leaving it at /root causes a permission error
+        # trying to write there as a non-root user.
+        sudo -u "$TARGET_USER" -H env PATH="$TARGET_HOME/.local/bin:/usr/local/bin:/usr/bin:/bin" bash -lc "cd \"$TARGET_HOME\" && $*"
     }
 else
     run_as_target() {
-        env PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin" bash -lc "$*"
+        env PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin" bash -lc "cd \"$HOME\" && $*"
     }
 fi
 
