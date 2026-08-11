@@ -5,6 +5,11 @@ if [[ "$chezmoi_os" != "linux" || "$chezmoi_os_release_id" != "ubuntu" ]]; then
     exit 0
 fi
 
+is_server='{{ .isServer }}'
+if [[ "$is_server" != "true" ]]; then
+    exit 0
+fi
+
 # Dev tools for Ubuntu: Node.js 22 + Claude Code
 # Runs once on first chezmoi apply on an Ubuntu server
 set -euo pipefail

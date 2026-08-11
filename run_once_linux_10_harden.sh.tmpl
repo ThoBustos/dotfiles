@@ -5,6 +5,11 @@ if [[ "$chezmoi_os" != "linux" || "$chezmoi_os_release_id" != "ubuntu" ]]; then
     exit 0
 fi
 
+is_server='{{ .isServer }}'
+if [[ "$is_server" != "true" ]]; then
+    exit 0
+fi
+
 # Linux security hardening: UFW, fail2ban, SSH hardening, unattended-upgrades
 # Runs once on first chezmoi apply on an Ubuntu server
 set -euo pipefail
@@ -78,14 +83,17 @@ fi
 echo "SSH hardened"
 
 # UFW firewall
+# 80/443 are NOT opened by default — many servers run non-public services
+# (e.g. DNS/admin UIs bound to 0.0.0.0) that a blanket public 80/443 rule
+# would expose. If this box hosts public websites, open them explicitly:
+#   sudo ufw allow 80/tcp comment 'HTTP'
+#   sudo ufw allow 443/tcp comment 'HTTPS'
 ufw --force reset
 ufw default deny incoming
 ufw default allow outgoing
 ufw limit 22/tcp comment 'SSH rate-limited'    # 6 connections per 30s
-ufw allow 80/tcp comment 'HTTP'
-ufw allow 443/tcp comment 'HTTPS'
 ufw --force enable
-echo "UFW configured"
+echo "UFW configured (80/443 left closed — open explicitly if this server hosts public web services)"
 
 # fail2ban — SSH jail
 # banaction = ufw ensures bans go through UFW, not raw iptables (avoids backend clash)

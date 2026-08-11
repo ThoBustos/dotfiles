@@ -1,9 +1,33 @@
 # Chezmoi config template
 # On new machine setup, prompts for private values
 
+{{/*
+Machine type decides two independent things:
+  - isPersonal: install terminal/editor dotfiles (tmux, nvim, zed, ghostty)?
+  - isServer:   run the security/service bootstrap (harden, Tailscale, Docker, Hermes, dev-tools)?
+
+macOS always gets isPersonal=true, isServer=false — no prompts, unchanged behavior.
+Linux Ubuntu Desktop assumes isPersonal=true, isServer=false by default, no prompts.
+Linux Ubuntu VPS is the ambiguous case, so it asks both explicitly.
+*/ -}}
+{{- $isPersonal := true -}}
+{{- $isServer := false -}}
+{{- if eq .chezmoi.os "linux" -}}
+  {{- $isDesktop := promptBool "Is this an Ubuntu Desktop (not a remote VPS)" false -}}
+  {{- if $isDesktop -}}
+    {{- $isPersonal = true -}}
+    {{- $isServer = false -}}
+  {{- else -}}
+    {{- $isPersonal = promptBool "Will you code directly on this VPS (install tmux/nvim/zed/ghostty)" false -}}
+    {{- $isServer = promptBool "Run the security/service bootstrap (hardening, Tailscale, Docker, Hermes)" true -}}
+  {{- end -}}
+{{- end }}
+
 [data]
     name = "Thomas Bustos"
     email = "{{ promptString "email" }}"  # Prompted, not stored
+    isPersonal = {{ $isPersonal }}
+    isServer = {{ $isServer }}
 
     # Public socials
     github = "ThoBustos"
