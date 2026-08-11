@@ -13,10 +13,12 @@ Brewfile
 # ----------------------------
 # Personal terminal/editor configs (skip when isPersonal is false,
 # e.g. a headless VPS you won't code on directly)
+# .chezmoiignore matches target (destination) paths, not source
+# directory names — must be .config/x, not dot_config/x.
 # ----------------------------
 {{ if not .isPersonal }}
-dot_config/tmux
-dot_config/nvim
-dot_config/zed
-dot_config/ghostty
+.config/tmux
+.config/nvim
+.config/zed
+.config/ghostty
 {{ end }}
